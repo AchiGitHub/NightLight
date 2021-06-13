@@ -9,7 +9,7 @@ import Constants from './Constants';
 import Images from './assets/Images';
 
 export default class App extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -27,7 +27,7 @@ export default class App extends Component {
         let world = engine.world;
         world.gravity.y = 0.0;
 
-        let bird = Matter.Bodies.rectangle( Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT / 2, Constants.BIRD_WIDTH, Constants.BIRD_HEIGHT);
+        let bird = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT / 2, Constants.BIRD_WIDTH, Constants.BIRD_HEIGHT);
 
         let floor1 = Matter.Bodies.rectangle(
             Constants.MAX_WIDTH / 2,
@@ -50,7 +50,7 @@ export default class App extends Component {
         Matter.Events.on(engine, 'collisionStart', (event) => {
             var pairs = event.pairs;
 
-            this.gameEngine.dispatch({ type: "game-over"});
+            this.gameEngine.dispatch({ type: "game-over" });
 
         });
 
@@ -58,12 +58,12 @@ export default class App extends Component {
             physics: { engine: engine, world: world },
             floor1: { body: floor1, renderer: Floor },
             floor2: { body: floor2, renderer: Floor },
-            bird: { body: bird, pose: 1, renderer: Bird},
+            bird: { body: bird, pose: 1, renderer: Bird },
         }
     }
 
     onEvent = (e) => {
-        if (e.type === "game-over"){
+        if (e.type === "game-over") {
             //Alert.alert("Game Over");
             this.setState({
                 running: false
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
         top: 50,
         left: Constants.MAX_WIDTH / 2 - 20,
         textShadowColor: '#444444',
-        textShadowOffset: { width: 2, height: 2},
+        textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 2,
         fontFamily: '04b_19'
     },
