@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View, StatusBar, Alert, TouchableOpacity, Image } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, StatusBar, Alert, TouchableOpacity, Image, AppState } from 'react-native';
 import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
 import Bird from './Bird';
@@ -7,6 +7,7 @@ import Floor from './Floor';
 import Physics, { resetPipes } from './Physics';
 import Constants from './Constants';
 import Images from './assets/Images';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class App extends Component {
     constructor(props) {
@@ -15,11 +16,42 @@ export default class App extends Component {
         this.state = {
             running: true,
             score: 0,
+            highScore: 0,
+            appState: AppState.currentState
         };
 
         this.gameEngine = null;
 
         this.entities = this.setupWorld();
+    }
+
+    componentDidMount() {
+        this.getHighScore();
+        AppState.addEventListener('change', this._handleAppStateChange);
+    }
+
+    getHighScore = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('@highScore')
+            if (jsonValue !== null) {
+                this.setState({
+                    highScore: parseInt(JSON.parse(jsonValue).score)
+                })
+            }
+        } catch (error) {
+
+        }
+    }
+
+    saveHighScore = async (score) => {
+        try {
+            let highScore = {
+                score: score
+            }
+            await AsyncStorage.setItem('@highScore', JSON.stringify(highScore));
+        } catch (error) {
+
+        }
     }
 
     setupWorld = () => {
@@ -65,6 +97,12 @@ export default class App extends Component {
     onEvent = (e) => {
         if (e.type === "game-over") {
             //Alert.alert("Game Over");
+            if (this.state.score > this.state.highScore) {
+                this.saveHighScore(this.state.score);
+                this.setState({
+                    highScore: this.state.score
+                })
+            }
             this.setState({
                 running: false
             });
@@ -82,6 +120,22 @@ export default class App extends Component {
             running: true,
             score: 0
         });
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState) => {
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            resetPipes();
+            this.gameEngine.swap(this.setupWorld());
+            this.setState({
+                running: true,
+                score: 0
+            });
+        }
+        this.setState({ appState: nextAppState });
     }
 
     render() {
@@ -102,6 +156,8 @@ export default class App extends Component {
                     <View style={styles.fullScreen}>
                         <Text style={styles.gameOverText}>Game Over</Text>
                         <Text style={styles.gameOverSubText}>Try Again</Text>
+                        <Text style={styles.gameOverSubText}>Score: {this.state.score}</Text>
+                        <Text style={styles.gameOverSubText}>High Score: {this.state.highScore}</Text>
                     </View>
                 </TouchableOpacity>}
             </View>
