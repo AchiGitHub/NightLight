@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View, StatusBar, Alert, TouchableOpacity, Image } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, StatusBar, Alert, TouchableOpacity, Image, AppState } from 'react-native';
 import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
 import Bird from './Bird';
@@ -16,7 +16,8 @@ export default class App extends Component {
         this.state = {
             running: true,
             score: 0,
-            highScore: 0
+            highScore: 0,
+            appState: AppState.currentState
         };
 
         this.gameEngine = null;
@@ -26,6 +27,7 @@ export default class App extends Component {
 
     componentDidMount() {
         this.getHighScore();
+        AppState.addEventListener('change', this._handleAppStateChange);
     }
 
     getHighScore = async () => {
@@ -118,6 +120,22 @@ export default class App extends Component {
             running: true,
             score: 0
         });
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState) => {
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            resetPipes();
+            this.gameEngine.swap(this.setupWorld());
+            this.setState({
+                running: true,
+                score: 0
+            });
+        }
+        this.setState({ appState: nextAppState });
     }
 
     render() {
