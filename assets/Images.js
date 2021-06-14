@@ -1,6 +1,6 @@
 export default Images = {
-    background: require('./img/background.png'),
-    floor: require('./img/floor.png'),
+    background: require('./img/background.jpg'),
+    floor: require('./img/floor.jpg'),
     pipeCore: require('./img/pipe_core.png'),
     pipeTop: require('./img/pipe_top.png'),
     bird1: require('./img/bird1.png'),
