@@ -12,6 +12,7 @@
     "matter-js": "^0.14.2",
     "react": "^16.8.6",
     "react-native": "^0.60.5",
+    "react-native-admob": "^2.0.0-beta.6",
     "react-native-game-engine": "^0.12.1"
   },
   "devDependencies": {

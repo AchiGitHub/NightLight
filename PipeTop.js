@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View, Image, Animated } from "react-native";
 import Images from './assets/Images';
 
 export default class PipeTop extends Component {
@@ -11,7 +11,7 @@ export default class PipeTop extends Component {
 
 
         return (
-            <Image
+            <Animated.Image
                 style={{
                     position: "absolute",
                     left: x,
@@ -21,6 +21,6 @@ export default class PipeTop extends Component {
                 }}
                 resizeMode="stretch"
                 source={Images.pipeTop} />
-    );
-  }
+        );
+    }
 }
