@@ -31,6 +31,7 @@ export default class App extends Component {
 
         AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/6300978111');
         AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
+        AdMobInterstitial.requestAd().catch(error => console.warn(error));
 
         AppState.addEventListener('change', this._handleAppStateChange);
 
