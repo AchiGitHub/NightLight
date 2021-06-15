@@ -8,6 +8,7 @@ import Physics, { resetPipes } from './Physics';
 import Constants from './Constants';
 import Images from './assets/Images';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AdMobInterstitial, PublisherBanner } from 'react-native-admob';
 
 export default class App extends Component {
     constructor(props) {
@@ -27,7 +28,12 @@ export default class App extends Component {
 
     componentDidMount() {
         this.getHighScore();
+
+        AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/6300978111');
+        AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
+
         AppState.addEventListener('change', this._handleAppStateChange);
+
     }
 
     getHighScore = async () => {
@@ -124,6 +130,7 @@ export default class App extends Component {
 
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
+        AdMobInterstitial.removeAllListeners();
     }
 
     _handleAppStateChange = (nextAppState) => {
@@ -136,6 +143,10 @@ export default class App extends Component {
             });
         }
         this.setState({ appState: nextAppState });
+    }
+
+    showInterstitial = () => {
+        AdMobInterstitial.showAd().catch(error => console.warn(error));
     }
 
     render() {
@@ -152,14 +163,15 @@ export default class App extends Component {
                     <StatusBar hidden={true} />
                 </GameEngine>
                 <Text style={styles.score}>{this.state.score}</Text>
-                {!this.state.running && <TouchableOpacity style={styles.fullScreenButton} onPress={this.reset}>
+                {!this.state.running && <TouchableOpacity style={styles.fullScreenButton} onPress={() => { this.showInterstitial(); this.reset(); }}>
                     <View style={styles.fullScreen}>
                         <Text style={styles.gameOverText}>Game Over</Text>
                         <Text style={styles.gameOverSubText}>Try Again</Text>
                         <Text style={styles.gameOverSubText}>Score: {this.state.score}</Text>
                         <Text style={styles.gameOverSubText}>High Score: {this.state.highScore}</Text>
                     </View>
-                </TouchableOpacity>}
+                </TouchableOpacity>
+                }
             </View>
         );
     }
