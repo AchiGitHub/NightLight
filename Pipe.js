@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View, Image, Animated } from "react-native";
 import Images from './assets/Images';
 
 export default class Pipe extends Component {
@@ -24,10 +24,10 @@ export default class Pipe extends Component {
                     overflow: 'hidden',
                     flexDirection: 'column'
                 }}>
-                {Array.apply(null, Array(pipeIterations)).map(( el, idx) => {
-                    return <Image style={{ width: width, height: pipeHeight }} key={idx} resizeMode="stretch" source={Images.pipeCore} />
+                {Array.apply(null, Array(pipeIterations)).map((el, idx) => {
+                    return <Animated.Image style={{ width: width, height: pipeHeight }} key={idx} resizeMode="stretch" source={Images.pipeCore} />
                 })}
             </View>
-    );
-  }
+        );
+    }
 }

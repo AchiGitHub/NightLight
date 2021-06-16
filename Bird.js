@@ -3,7 +3,7 @@ import { View, Image, Animated } from "react-native";
 import Images from './assets/Images';
 
 export default class Bird extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.animatedValue = new Animated.Value(this.props.body.velocity.y);
@@ -22,7 +22,7 @@ export default class Bird extends Component {
             extrapolate: 'clamp'
         })
 
-        let image = Images['bird' + this.props.pose];
+        let image = Images['bird1'];
 
         return (
             <Animated.Image
@@ -36,6 +36,6 @@ export default class Bird extends Component {
                 }}
                 resizeMode="stretch"
                 source={image} />
-    );
-  }
+        );
+    }
 }

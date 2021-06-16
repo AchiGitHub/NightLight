@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View, Image, Animated } from "react-native";
 import Images from './assets/Images';
 
 export default class Floor extends Component {
@@ -22,10 +22,10 @@ export default class Floor extends Component {
                     overflow: 'hidden',
                     flexDirection: 'row'
                 }}>
-                {Array.apply(null, Array(imageIterations)).map(( el, idx) => {
-                    return <Image style={{ width: height, height: height }} key={idx} resizeMode="stretch" source={Images.floor} />
+                {Array.apply(null, Array(imageIterations)).map((el, idx) => {
+                    return <Animated.Image style={{ width: height, height: height }} key={idx} resizeMode="stretch" source={Images.floor} />
                 })}
             </View>
-    );
-  }
+        );
+    }
 }
