@@ -29,16 +29,16 @@ export default class App extends Component {
     componentDidMount() {
         this.getHighScore();
 
+        AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712');
+        AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
+        AdMobInterstitial.requestAd().catch(error => console.warn(error));
+
+        AdMobInterstitial.addEventListener('adClosed', () => {
+            AdMobInterstitial.requestAd().catch(error => console.warn(error));
+        });
+
         AppState.addEventListener('change', this._handleAppStateChange);
 
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (!this.state.running && this.state.score !== 0) {
-            AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712');
-            AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
-            AdMobInterstitial.requestAd().catch(error => console.warn(error));
-        }
     }
 
     getHighScore = async () => {
