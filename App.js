@@ -88,8 +88,9 @@ export default class App extends Component {
             { isStatic: true }
         );
 
+        let ceiling = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, 0, Constants.MAX_WIDTH, 50, { isStatic: true })
 
-        Matter.World.add(world, [bird, floor1, floor2]);
+        Matter.World.add(world, [bird, floor1, floor2, ceiling]);
         Matter.Events.on(engine, 'collisionStart', (event) => {
             var pairs = event.pairs;
 
@@ -101,6 +102,7 @@ export default class App extends Component {
             physics: { engine: engine, world: world },
             floor1: { body: floor1, renderer: Floor },
             floor2: { body: floor2, renderer: Floor },
+            ceiling: { body: ceiling, renderer: Floor },
             bird: { body: bird, pose: 1, renderer: Bird },
         }
     }
