@@ -29,7 +29,10 @@ export default class App extends Component {
     componentDidMount() {
         this.getHighScore();
 
+        //test
         AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712');
+        //prod
+        // AdMobInterstitial.setAdUnitID('ca-app-pub-8167817804987450/2213183228');
         AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
         AdMobInterstitial.requestAd().catch(error => console.warn(error));
 
