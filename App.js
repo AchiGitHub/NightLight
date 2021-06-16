@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 72,
         top: 50,
-        left: Constants.MAX_WIDTH / 2 - 20,
+        alignSelf: 'center',
         textShadowColor: '#444444',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 2,
