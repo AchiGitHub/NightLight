@@ -18,7 +18,8 @@ export default class App extends Component {
             running: true,
             score: 0,
             highScore: 0,
-            appState: AppState.currentState
+            appState: AppState.currentState,
+            showInitialMessage: true
         };
 
         this.gameEngine = null;
@@ -73,6 +74,12 @@ export default class App extends Component {
         let world = engine.world;
         world.gravity.y = 0.0;
 
+        setTimeout(() => {
+            this.setState({
+                showInitialMessage: false
+            })
+        }, 1000)
+
         let bird = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT / 2, Constants.BIRD_WIDTH, Constants.BIRD_HEIGHT);
 
         let floor1 = Matter.Bodies.rectangle(
@@ -125,7 +132,7 @@ export default class App extends Component {
         } else if (e.type === "score") {
             this.setState({
                 score: this.state.score + 1
-            })
+            });
         }
     }
 
@@ -134,8 +141,15 @@ export default class App extends Component {
         this.gameEngine.swap(this.setupWorld());
         this.setState({
             running: true,
-            score: 0
+            score: 0,
+            showInitialMessage: true
         });
+
+        setTimeout(() => {
+            this.setState({
+                showInitialMessage: false
+            })
+        }, 1000)
     }
 
     componentWillUnmount() {
@@ -163,6 +177,11 @@ export default class App extends Component {
         return (
             <View style={styles.container}>
                 <Image source={Images.background} style={styles.backgroundImage} resizeMode="stretch" />
+                {this.state.showInitialMessage &&
+                    <View style={styles.fullScreen}>
+                        <Text style={styles.tapToStart}>Tap To Start</Text>
+                    </View>
+                }
                 <GameEngine
                     ref={(ref) => { this.gameEngine = ref; }}
                     style={styles.gameContainer}
@@ -247,5 +266,11 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         flex: 1
+    },
+    tapToStart: {
+        color: 'white',
+        fontSize: 48,
+        fontFamily: '04b_19',
+        top: 50
     }
 });
